@@ -54,10 +54,10 @@ void Dead_Recking(unsigned char *recvBuff, int size)
 		ack=(int)recvBuff[58];
 		if(delta_time)  //根据时间和左右轮变化量进行定位推算
 		{
-			vl=(delta_lpulse*219.8/1620)/delta_time;  //左轮线速度(mm/ms)
-			vr=(delta_rpulse*219.8/1620)/delta_time;  //右轮线速度(mm/ms)
+			vl=(delta_lpulse*odo_perimeter/odo_pulse)/delta_time;  //左轮线速度(mm/ms)
+			vr=(delta_rpulse*odo_perimeter/odo_pulse)/delta_time;  //右轮线速度(mm/ms)
 			v=(vr+vl)/2;   //机器前进线速度
-			w=(vr-vl)/237.5;      //机器前进角速度（rad/ms），机器前进角度为w*delta_time
+			w=(vr-vl)/odo_axis;      //机器前进角速度（rad/ms），机器前进角度为w*delta_time
 			y+=v*delta_time*cos(theta);
 			x+=v*delta_time*sin(theta);
 			theta+=w*delta_time*57.2957795;
