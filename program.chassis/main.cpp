@@ -27,11 +27,7 @@ int main(int argc,char *argv[])
 	pthread_create(&thread[2], NULL, Process_data, (void *)&fd);//接收控制板上报数据，并显示时间戳和左右轮脉冲
 	pthread_create(&thread[3], NULL, set_server15000, (void *)argv[1]);//服务端程序,发送位置
 	//pthread_create(&thread[4], NULL, set_server13000, (void *)argv[1]);//服务端程序,发送位置
-	if(control_sweeper(argv[2], fd))  //客户端初始化，接收速度控制扫地机移动
-	{
-		printf("set client field!!\n");
-		return 0;
-	}
+	control_sweeper(fd);
 	UART0_Close(fd);
 	return 0;
 } 

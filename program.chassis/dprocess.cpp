@@ -214,40 +214,50 @@ void turnleft(double t,int fd)
 		}
 	}
 }
+int scanKeyboard()  //读取键盘值
+{
+	int in;
+	struct termios new_settings;
+	struct termios stored_settings;
+	tcgetattr(0, &stored_settings);
+	new_settings = stored_settings;
+	new_settings.c_lflag &= (~ICANON);
+	new_settings.c_cc[VTIME] = 0;
+	tcgetattr(0, &stored_settings);
+	new_settings.c_cc[VMIN] = 1;
+	tcsetattr(0, TCSANOW, &new_settings);
+
+	in = getchar();
+
+	tcsetattr(0, TCSANOW, &stored_settings);
+	return in;
+}
+void control_sweeper(int fd)  //读取键盘值，控制扫地机移动
+{
+	while(1)
+	{
+		char keyBorad = scanKeyboard();
+		switch(keyBorad)
+		{	
+			case 'w'|'W':move(100,100,fd);break;
+			case 'a'|'A':move(-100,100,fd);break;
+			case 's'|'S':move(-100,-100,fd);break;
+			case 'd'|'D':move(100,-100,fd);break;
+			case '/':move(0,0,fd);break;
+			case  'q'|'Q':exit(0); break;
+			default: break;	
+		}	 
+	}
+}
 /*************************************************************
  * 函数名：control_sweeper
  * 说  明：建立client，接收速度控制指令，根据指令调用move函数控制扫地机移动，端口号：13001
  * 参  数：serverIP:要连接服务器ip
  * 返回值：无
- * ***********************************************************/
-int control_sweeper(char *serverIP, int fd)
+ * **********************************************************/
+/*int control_sweeper(char *serverIP, int fd)
 {
-	
-	//自动打扫正方形
-	
-	/*sleep(5);
-	run(500,fd);
-	sleep(1);
-	turnleft(90.0,fd);
-	sleep(1);
-
-	run(500,fd);
-	sleep(1);
-	turnleft(90.0,fd);
-	sleep(1);
-
-	run(500,fd);
-	sleep(1);
-	turnleft(90.0,fd);
-	sleep(1);
-
-	run(500,fd);
-	sleep(1);
-	turnleft(90.0,fd);*/
-	while(1);// move(0,0,fd);
-	
-
-    /*unsigned char recv_buff[10];  //存放速度指令
+    unsigned char recv_buff[10];  //存放速度指令
     int i, j, _port=13001;
     int sock = socket(AF_INET,SOCK_STREAM, 0);
     if(sock < 0)
@@ -309,9 +319,9 @@ int control_sweeper(char *serverIP, int fd)
 		printf("%d-----%d\n",speedL,speedR);
 		move(speedL, speedR, fd);
 	}
-    close(sock);*/
+    close(sock);
 	return 0;
-}
+}*/
 /*************************************************************
  * 函数名：startup
  * 说  明：socket服务器端初始化，socket，bind，listen

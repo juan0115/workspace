@@ -1,10 +1,11 @@
 CXX ?= g++
 
-CXXFLAGS += -c -Wall $(shell pkg-config --cflags opencv)
+CXXFLAGS += -c -Wall $(shell pkg-config --cflags opencv) -g
 LDFLAGS += $(shell pkg-config --libs --static opencv)
+OBJ := ../xmap
 
 test2 : main.o dprocess.o serial.o 
-	$(CXX) -o xmap main.o dprocess.o serial.o -lpthread	$(LDFLAGS)
+	$(CXX) -o $(OBJ) main.o dprocess.o serial.o -lpthread	$(LDFLAGS)
 
 main.o : main.cpp dprocess.h
 	$(CXX) -c main.cpp $(CXXFLAGS)
@@ -16,4 +17,4 @@ dprocess.o : dprocess.cpp dprocess.h  serial.h
 	$(CXX) -c dprocess.cpp $(CXXFLAGS)
 
 clean :
-	rm -f xmap main.o dprocess.o serial.o
+	rm -f $(OBJ) ./*.o
