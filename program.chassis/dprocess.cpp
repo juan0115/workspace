@@ -45,6 +45,7 @@ void Dead_Recking(unsigned char *recvBuff, int size)
 		if(t>18000)
 			t-=(0x8000 * 2) ;
 		theta = ((double)t)/100;
+		thate = thate > 0 ? thate : 360 + thate ; 
 		delta_time=((double)(recvBuff[4]<<24|recvBuff[5]<<16|recvBuff[6]<<8|recvBuff[7]))-last_time;
 		last_time=(double)(recvBuff[4]<<24|recvBuff[5]<<16|recvBuff[6]<<8|recvBuff[7]);
 		delta_lpulse=((double)(recvBuff[11]<<24|recvBuff[12]<<16|recvBuff[13]<<8|recvBuff[14]))-last_lpulse;
