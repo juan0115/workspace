@@ -1,9 +1,4 @@
 #include"dprocess.h"
-//#include "opencv2/core.hpp"
-//#include "opencv2/imgproc.hpp"
-//#include "opencv2/highgui.hpp"
-//#include "opencv2/videoio.hpp"
-//using namespace cv;
 
 static int ack=0;
 double x, y, theta;
