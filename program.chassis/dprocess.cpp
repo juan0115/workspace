@@ -20,7 +20,7 @@ int get_data(data_info *p,int len)
 	p->data_len[0] = p->data_len[0] ^ p->data_len[3];
 	p->data_len[1] = p->data_len[1] ^ p->data_len[2];
 	p->data_len[2] = p->data_len[1] ^ p->data_len[2];
-	p->data_len[1] = p->data_len[1] ^ p->data_len[2];
+	p->data_len[1] = p->data_len[1] ^ p->data_len[2];gb
 	return t;
 }
 /*************************************************************
