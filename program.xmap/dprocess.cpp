@@ -150,7 +150,8 @@ void* Process_data(void *arg)
                 memset(intbuf,0,sizeof(intbuf));
                 for(j=i+2;j<readLength;j+=2)
                 {
-                    intbuf[k++]=(int)(recvBuff[j]<<8 | recvBuff[j+1]); //前一个字节为高八位，后一个为低八位
+                    //前一个字节为高八位，后一个为低八位
+                    intbuf[k++]=(int)(recvBuff[j]<<8 | recvBuff[j+1]); 
                 }
                 Create_2dmap();  //创建二维数组
                 break;
