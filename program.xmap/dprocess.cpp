@@ -71,7 +71,6 @@ void Bresenhamline(int x1,int y1,int x2,int y2,int color)
             }
             if(xmap[cx][cy]!=4&&xmap[cx][cy]!=9)
             xmap[cy][cx]=color;
-            //putpixel(img, cy, cx, c);
             cx += ix;
         }
     }
@@ -90,7 +89,6 @@ void Bresenhamline(int x1,int y1,int x2,int y2,int color)
             }
             if(xmap[cx][cy]!=4&&xmap[cx][cy]!=9)
             xmap[cx][cy]=color;
-            //putpixel(img, cx, cy, c);
             cx += ix;
         }
     }
