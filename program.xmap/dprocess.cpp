@@ -104,23 +104,24 @@ void Create_2dmap()
 {
     int i;
     double xx,yy;
-    for(i=20;i<201;i++)
+    for(i = 20; i < 201; i++)               //舍去-45° ~ 45°之外的的测距值
     {
-        intbuf[i] = (intbuf[i]+5)/10;//小鸟数据单位：mm，地图中一个像素代表一厘米，intbuf中值四舍五入
-        if(intbuf[i]>300)  //超出最大测距点或在-45° ~ 45°之外的部都不做处理。
+        //2D激光测距模块数据单位：mm，地图中一个像素代表一厘米，intbuf中值四舍五入
+        intbuf[i] = (intbuf[i] + 5) / 10; 
+        if(intbuf[i] > 300)                 //舍去超出最大测距3m的距离值
         {  
-            xx=sxx-(sin(tfm(theta+90.0+45.0-(i-20)/2.0))*300.0);
-            yy=syy+(cos(tfm(theta+90.0+45.0-(i-20)/2.0))*300.0);
-            printf("xx=%lf yy=%lf\n",xx,yy);
-            Bresenhamline(xx,yy,sxx,syy,1);  //红外线射到的点到扫地机画直线
+            //激光照射到的点的坐标
+            xx=sxx - (sin(tfm(theta + 90.0 + 45.0 - (i-20) / 2.0)) * 300.0);
+            yy=syy + (cos(tfm(theta + 90.0 + 45.0 - (i-20) / 2.0)) * 300.0);
+            Bresenhamline(xx, yy, sxx, syy, MAP_EXPLORED_WHITE);        //最大默认距离点到激光头画直线
         }
         else
         {   
-            xx=sxx-(sin(tfm(theta+90.0+45.0-(i-20)/2.0))*(double)intbuf[i]);
-            yy=syy+(cos(tfm(theta+90.0+45.0-(i-20)/2.0))*(double)intbuf[i]);
-           // printf("xx=%lf yy=%lf\n",xx,yy);
-            Bresenhamline(xx,yy,sxx,syy,1);//红外线射到的点到扫地机画直线
-            xmap[(int)xx][(int)yy]=4;
+            //激光照射到的点的坐标
+            xx=sxx - (sin(tfm(theta + 90.0 + 45.0 - (i-20) / 2.0)) * (double)intbuf[i]);
+            yy=syy + (cos(tfm(theta + 90.0 + 45.0 - (i-20) / 2.0)) * (double)intbuf[i]);
+            Bresenhamline(xx, yy, sxx, syy, MAP_EXPLORED_WHITE);        //红外线射到的点到激光头画直线
+            xmap[(int)xx][(int)yy] = MAP_BARRIER_BLACK;                 //激光照射到的点标记为障碍物 
         }
     }
     memset(intbuf, 0, sizeof(intbuf));
@@ -329,10 +330,10 @@ void cv_map(char *_ip)
         {
             switch(xmap[i][j])
             {
-                case 0:R=194;G=194;B=194;break;  //灰色
-                case 1:R=255;G=255;B=255;break;  //白色
-                case 4:R=0;G=0;B=0;break;    //黑色
-                case 9:R=255;G=0;B=0;break;   //红色
+                case MAP_UNEXPLORED_GRAY: R=194; G=194; B=194; break;   //灰色未探索区域
+                case MAP_EXPLORED_WHITE: R=255; G=255; B=255; break;    //白色已探索区域
+                case MAP_BARRIER_BLACK: R=0; G=0; B=0; break;           //黑色障碍物
+                case MAP_LOCUS_RED: R=255; G=0; B=0; break;             //红色轨迹
                 default:R=194;G=194;B=194;break;
             }
             image.at<cv::Vec3b>(i, j)[0] = B;
