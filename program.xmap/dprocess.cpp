@@ -110,16 +110,16 @@ void Create_2dmap()
         intbuf[i] = (intbuf[i] + 5) / 10; 
         if(intbuf[i] > 300)                 //舍去超出最大测距3m的距离值
         {  
-            //激光照射到的点的坐标
-            xx=sxx - (sin(tfm(theta + 90.0 + 45.0 - (i-20) / 2.0)) * 300.0);
-            yy=syy + (cos(tfm(theta + 90.0 + 45.0 - (i-20) / 2.0)) * 300.0);
+            //最大默认距离点的坐标
+            xx = 512 - (sin(tfm(135.0 - (i-20) / 2.0)) * 300.0);
+            yy = 512 + (cos(tfm(135.0 - (i-20) / 2.0)) * 300.0);
             Bresenhamline(xx, yy, sxx, syy, MAP_EXPLORED_WHITE);        //最大默认距离点到激光头画直线
         }
         else
         {   
             //激光照射到的点的坐标
-            xx=sxx - (sin(tfm(theta + 90.0 + 45.0 - (i-20) / 2.0)) * (double)intbuf[i]);
-            yy=syy + (cos(tfm(theta + 90.0 + 45.0 - (i-20) / 2.0)) * (double)intbuf[i]);
+            xx = 512 - (sin(tfm(135.0 - (i-20) / 2.0)) * (double)intbuf[i]);
+            yy = 512 + (cos(tfm(135.0 - (i-20) / 2.0)) * (double)intbuf[i]);
             Bresenhamline(xx, yy, sxx, syy, MAP_EXPLORED_WHITE);        //红外线射到的点到激光头画直线
             xmap[(int)xx][(int)yy] = MAP_BARRIER_BLACK;                 //激光照射到的点标记为障碍物 
         }
