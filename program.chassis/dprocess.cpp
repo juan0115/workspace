@@ -50,14 +50,16 @@ void Dead_Recking(unsigned char *recvBuff, int size)
 		ack=(int)recvBuff[58];
 		if(delta_time)  //根据时间和左右轮变化量进行定位推算
 		{
-			vl = (delta_lpulse * odo_perimeter / odo_pulse) / delta_time;  //左轮线速度(mm/ms)
-			vr = (delta_rpulse * odo_perimeter / odo_pulse) / delta_time;  //右轮线速度(mm/ms)
-			v = (vr + vl) / 2;   //机器前进线速度
-			w = ( vr - vl) / odo_axis;      //机器前进角速度（rad/ms），机器前进角度为w*delta_time
-			y += v * delta_time * cos(theta);
-			x += v * delta_time * sin(theta);
-			theta += w * delta_time * 57.2957795;
-			printf("(***************%10.2lf mm, %0.2lf mm, %0.2lf 度*****************)\n",x,y,theta);
+			Sl = delta_lpulse * odo_perimeter / odo_pulse;  //左轮移动距离
+			Sr = delta_rpulse * odo_perimeter / odo_pulse;  //右轮移动距离
+			S = Sl + Sr;
+			a = (Sr - Sl) / odo_axis;		//角度变化量推算
+			Sx = S * cos(a);				//x轴方向移动距离
+			Sy = S * sin(a);				//y轴方向移动距离
+			//坐标更新
+			x += Sx * cos(theta) - Sy * sin(theta);
+			y += Sx * sin(theta) + Sy * sin(theta);
+			theta += a;       //这里计算的角度时所用烦人theta是陀螺仪角度
 		}
 	}
 }
