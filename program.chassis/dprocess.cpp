@@ -59,7 +59,7 @@ void Dead_Recking(unsigned char *recvBuff, int size)
 			//坐标更新
 			x += Sx * cos(theta) - Sy * sin(theta);
 			y += Sx * sin(theta) + Sy * sin(theta);
-			theta += a;       //这里计算的角度时所用烦人theta是陀螺仪角度
+			theta += a;       //这里计算的角度时所用theta是陀螺仪上传角度
 		}
 	}
 }
